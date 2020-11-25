@@ -12,7 +12,9 @@
     </a-col>
     <a-col flex="auto">
        <a-card  style="width:100%;height:100%;">
-          <div slot="title">2</div>
+          <div slot="title">
+              <label>分屏:</label>
+          </div>
           <div></div>
        </a-card>
     </a-col>
