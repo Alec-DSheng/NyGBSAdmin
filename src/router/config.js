@@ -27,12 +27,28 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'demo',
-          name: '演示页',
+          path: 'dashboard/workplace',
+          name: '首页',
           meta: {
-            icon: 'file-ppt'
+            icon: 'dashboard'
           },
-          component: () => import('@/pages/demo')
+          //component: BlankView,
+          component: () => import('@/pages/dashboard/workplace'),
+          // children: [
+          //   {
+          //     path: '',
+          //     name: '工作台',
+              
+          //   }
+          // ]
+        },
+        {
+          path: '/split/screen/display',
+          name: '分屏展示',
+          meta: {
+            icon: 'appstore'
+          },
+          component: () => import('@/pages/split/screen_display')
         },
         {
           path: 'parent1',
