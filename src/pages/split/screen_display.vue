@@ -14,6 +14,8 @@
        <a-card  style="width:100%;height:100%;">
           <div slot="title">
               <label>分屏:</label>
+                <i class="iconfont icon-yifenping icon" style="left: 10px;" :style="{color: mouseFlag == 1 || clickFlag == 1 ? '#ed4014': ''}"/>
+                
           </div>
           <div></div>
        </a-card>
@@ -26,6 +28,7 @@ import {mapState} from 'vuex'
 export default {
   data() {
     return {
+      mouseFlag: 1,
       tabList: [
         {
           key: 'tab1',
