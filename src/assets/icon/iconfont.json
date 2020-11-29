@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1458797",
+      "name": "加",
+      "font_class": "jia",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
       "icon_id": "2721857",
       "name": "四分屏",
       "font_class": "sifenping",
@@ -34,11 +41,39 @@
       "unicode_decimal": 58629
     },
     {
+      "icon_id": "6063414",
+      "name": "加",
+      "font_class": "jia1",
+      "unicode": "eb9a",
+      "unicode_decimal": 60314
+    },
+    {
+      "icon_id": "8859496",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "9345058",
+      "name": "话筒",
+      "font_class": "huatong",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
       "icon_id": "12347068",
       "name": "四分屏",
       "font_class": "sifenping1",
       "unicode": "e658",
       "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "14451669",
+      "name": "icon话筒／关闭／选中",
+      "font_class": "iconhuatongguanbixuanzhong",
+      "unicode": "e51c",
+      "unicode_decimal": 58652
     }
   ]
 }

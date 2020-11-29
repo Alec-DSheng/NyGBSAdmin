@@ -27,6 +27,6 @@ const positions = [
   }
 ]
 
-const admins = ['ICZER', 'JACK', 'LUIS', 'DAVID']
+const admins = ['Alec', '大圣', 'Alec-大圣', 'DAVID']
 
 export {positions, avatars, admins}

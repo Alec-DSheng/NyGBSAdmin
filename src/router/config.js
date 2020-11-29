@@ -1,5 +1,5 @@
 import TabsView from '@/layouts/tabs/TabsView'
-import BlankView from '@/layouts/BlankView'
+//import BlankView from '@/layouts/BlankView'
 import PageView from '@/layouts/PageView'
 
 // 路由配置
@@ -50,73 +50,111 @@ const options = {
           },
           component: () => import('@/pages/split/screen_display')
         },
+        // {
+        //   path: 'parent1',
+        //   name: '父级路由1',
+        //   meta: {
+        //     icon: 'dashboard',
+        //   },
+        //   component: PageView,
+        //   children: [
+        //     {
+        //       path: 'demo1',
+        //       name: '演示页面1',
+        //       component: () => import('@/pages/demo'),
+        //     }
+        //   ]
+        // },
         {
-          path: 'parent1',
-          name: '父级路由1',
+          path: 'device',
+          name: '设备管理',
           meta: {
-            icon: 'dashboard',
-          },
-          component: BlankView,
-          children: [
-            {
-              path: 'demo1',
-              name: '演示页面1',
-              component: () => import('@/pages/demo'),
-            }
-          ]
-        },
-        {
-          path: 'parent2',
-          name: '父级路由2',
-          meta: {
-            icon: 'form'
+            icon: 'build'
           },
           component: PageView,
           children: [
             {
-              path: 'demo2',
-              name: '演示页面2',
-              component: () => import('@/pages/demo'),
+              path: '/device',
+              name: '设备列表',
+              component: () => import('@/pages/device/device-list'),
+            },
+            {
+              path: '/device/channel',
+              name: '设备渠道',
+              hidden: true,
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/device/channel-list'),
+            },
+            {
+              path: '/device/channel/recording',
+              name: '设备录像',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/recording/device_recording'),
             }
           ]
-        },
+        }
+        ,
         {
-          path: 'exception',
-          name: '异常页',
+          path: 'recording',
+          name: '云端录像',
           meta: {
-            icon: 'warning',
+            icon: 'pull-request'
           },
-          component: BlankView,
+          component: PageView,
           children: [
             {
-              path: '404',
-              name: 'Exp404',
-              component: () => import('@/pages/exception/404')
+              path: '/recording/list',
+              name: '录像列表',
+              component: () => import('@/pages/device/device-list'),
             },
             {
-              path: '403',
-              name: 'Exp403',
-              component: () => import('@/pages/exception/403')
+              path: '/recording/plan',
+              name: '录像计划',
+              component: () => import('@/pages/recording/recording_plan'),
             },
-            {
-              path: '500',
-              name: 'Exp500',
-              component: () => import('@/pages/exception/500')
-            }
           ]
-        },
-        {
-          name: '验权页面',
-          path: 'auth/demo',
-          meta: {
-            icon: 'file-ppt',
-            authority: {
-              permission: 'form',
-              role: 'manager'
-            },
-            component: () => import('@/pages/demo')
-          }
         }
+        // {
+        //   path: 'exception',
+        //   name: '异常页',
+        //   meta: {
+        //     icon: 'warning',
+        //   },
+        //   component: BlankView,
+        //   children: [
+        //     {
+        //       path: '404',
+        //       name: 'Exp404',
+        //       component: () => import('@/pages/exception/404')
+        //     },
+        //     {
+        //       path: '403',
+        //       name: 'Exp403',
+        //       component: () => import('@/pages/exception/403')
+        //     },
+        //     {
+        //       path: '500',
+        //       name: 'Exp500',
+        //       component: () => import('@/pages/exception/500')
+        //     }
+        //   ]
+        // },
+        // {
+        //   name: '验权页面',
+        //   path: 'auth/demo',
+        //   meta: {
+        //     icon: 'file-ppt',
+        //     authority: {
+        //       permission: 'form',
+        //       role: 'manager'
+        //     },
+        //     component: () => import('@/pages/demo')
+        //   }
+        // }
       ]
     }
   ]

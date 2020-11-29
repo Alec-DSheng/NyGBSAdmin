@@ -88,4 +88,7 @@ export default {
      padding: 0;
      margin: 0;
    }
+   .ant-table-tbody > tr >td {
+     padding: 8px, 6px;
+   }
 </style>

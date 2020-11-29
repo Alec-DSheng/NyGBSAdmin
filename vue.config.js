@@ -21,6 +21,20 @@ const assetsCDN = {
     'js-cookie': 'Cookies'
   },
   css: [
+    {
+      loaderOptions: {
+        less: {
+          lessOptions: {
+            modifyVars: {
+              'primary-color': '#1DA57A',
+              'link-color': '#1DA57A',
+              'border-radius-base': '2px',
+            },
+            javascriptEnabled: true,
+          },
+        },
+      },
+    }
   ],
   js: [
     '//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
@@ -33,7 +47,7 @@ const assetsCDN = {
     '//cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js'
   ]
 }
-
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   devServer: {
     // proxy: {
@@ -67,6 +81,18 @@ module.exports = {
     )
     // Ignore all locale files of moment.js
     config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
+
+    //播放器
+    config.plugins.push( new CopyWebpackPlugin([
+      { from: 'node_modules/@liveqing/liveplayer/dist/component/crossdomain.xml'},
+      { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer.swf'},
+      { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer-lib.min.js', to: './assert/'},
+    ]))  
+    //jquery
+    config.plugins.push(new webpack.ProvidePlugin({
+      　　　　jQuery: "jquery",
+      　　　　$: "jquery"
+      　　}))
     // 生产环境下将资源压缩成gzip格式
     if (isProd) {
       // add `CompressionWebpack` plugin to webpack plugins
@@ -110,7 +136,7 @@ module.exports = {
       }
     }
   },
-  publicPath: isProd ? '/vue-antd-admin/' : '/',
+  publicPath: isProd ? './' : '/',
   outputDir: 'dist',
   assetsDir: 'static',
   productionSourceMap: false
