@@ -1,7 +1,9 @@
 <template>
   <a-dropdown>
     <div class="header-avatar" style="cursor: pointer">
-      <a-avatar class="avatar" size="small" shape="circle" :src="user.avatar"/>
+      <a-avatar class="avatar" size="small" shape="circle" :style="{backgroundColor: color}">
+        {{user.name.substring(0, 1)}}
+      </a-avatar>
       <span class="name">{{user.name}}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
@@ -23,6 +25,7 @@
 </template>
 
 <script>
+const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae']
 import {mapGetters} from 'vuex'
 import {logout} from '@/services/user'
 
@@ -30,6 +33,11 @@ export default {
   name: 'HeaderAvatar',
   computed: {
     ...mapGetters('account', ['user']),
+  },
+  data () {
+    return {
+      color: colorList[Math.floor(Math.random()*4)]
+    }
   },
   methods: {
     logout() {

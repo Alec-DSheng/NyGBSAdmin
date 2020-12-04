@@ -41,10 +41,19 @@
 
         </a-col>
         <a-col :span="12" style="text-align: right;">
-          <a-input-search style="width: 300px;" size="default" placeholder="关键字" enter-button @search="onSearch" />
+          <a-input-search style="width: 300px;" v-model="searchParams.channelId" size="default" placeholder="关键字" enter-button @search="onSearch" />
         </a-col>
       </a-row>
-      <a-table :columns="columns" :data-source="data" :scroll="{ x: 1400 }" size="middle"  bordered>
+      <a-table :columns="columns" :data-source="dataSource.data" :scroll="{ x: 1400 }" 
+          rowKey="code"
+          size="middle"  bordered 
+          :pagination="{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            showSizeChanger: true,
+            showTotal: function () {
+              return '共 ' + dataSource.total + '条'
+            }
+          }">
         <template slot="tape" slot-scope="text">
             <a-button type="link" @click="$router.push({path: 'channel/recording', params: text})"> 
               <a-icon style="fontSize:18px" type="video-camera" /> 
@@ -65,9 +74,9 @@
             <label>{{status == 1 ? '已开启' : '未开启'}}</label>
         </template>
         <template slot="imageView" slot-scope="text">
-            <a-popover placement="left">
+            <a-popover v-if="text.image != null"  placement="left">
               <template slot="content">
-                 <h5 v-text="'通道' + text.key + ':' + text.name"/>
+                 <h5 v-text="'通道' + text.code + ':' + text.name"/>
                  <a-card hoverable :bodyStyle="{padding:0,margin:0}"  style="width:300px; height: 200px;">
                     <img
                       slot="cover"
@@ -76,8 +85,10 @@
                     />
                  </a-card>
               </template>
-              <img :src="text.image" style="width: 50px; max-height: 30px;" />
+              <!-- <img :src="text.image == null ? '@/assets/img/logo.png' : text.image" style="width: 50px; max-height: 30px;" /> -->
+              <img style="width: 50px; max-height: 30px;" :src="text.image"/>
             </a-popover>
+            <img v-if="text.image == null" style="width: 50px; max-height: 30px;" src="@/assets/img/no_img.png"/>
         </template>
       </a-table>
       <!--引入组件 -->
@@ -92,7 +103,7 @@ const columns = [
     title: '通道号',
     width: 100,
     align: 'center',
-    dataIndex: 'key'
+    dataIndex: 'no'
   },
   {
     title: '通道国际编号',
@@ -131,18 +142,18 @@ const columns = [
     title: '在线人数',
     width: 100,
     align: 'center',
-    dataIndex: 'onlineNum',
+    dataIndex: 'viewers',
   },
   {
     title: '子节点数',
     align: 'center',
-    dataIndex: 'childNodes',
+    width: 100,
+    dataIndex: 'secret',
   },
   {
     title: '厂家',
-    width: 200,
     align: 'center',
-    dataIndex: 'manufactor',
+    dataIndex: 'manufacturer',
   },
   {
     title: '播放',
@@ -165,130 +176,9 @@ const columns = [
     width: 60,
     scopedSlots: { customRender: 'tape' },
   }
-];
-const data = [
-  {
-    key: 1,
-    code: '34020000001320000001',
-    name: '公园跑道212',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 2,
-     code: '34020000001320000005',
-    name: '公园跑道3331',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 3,
-    code: '34020000001320000006',
-    name: '公园跑道ddsa',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 4,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 5,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 6,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 7,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 8,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 9,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  },
-  {
-    key: 10,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606332134022&di=d13a637e72f1385f2da17939b8a69b28&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm7%2FM04%2F16%2F78%2FwKhQo1UQKuyEIO2XAAAAAHP6OFo489.jpg..180x180.jpg',
-    status: 1,
-    cloudVideotape: 1,
-    onlineNum: 21,
-    channelNum: 3,
-    childNodes: 0,
-    manufactor: '海康威视'
-  }
-];
+]
 import {mapState} from 'vuex'
+import {deviceChannelList} from '@/services/device'
 import PlayerModel from '../components/PlayerModel'
 export default {
   name: 'device_channel',
@@ -300,21 +190,42 @@ export default {
   },
   data () {
     return {
+      searchParams: {
+        deviceId: null,
+        channelId: null,
+        pageSize: 10,
+        pageNo: 1
+      },
       searchStatus: 'all',
       searchType: 'all',
-      data,
       columns,
+      dataSource: {total: 0, data: []}
     }
   },
   methods: {
     onSearch () {
-
+      this.loadData()
+    },
+    loadData () {
+      deviceChannelList(this.searchParams).then(res => {
+        let data = res.data
+        if (data.code == this.SUCCESS) {
+          this.dataSource = {total: data.data.total, data: data.data.list}
+        } else {
+          this.dataSource = {total: 0, data: []}
+        }
+        console.log(this.dataSource)
+      })
     },
     player (channel) {
       let play = this.$refs.playerModelRef
-      channel.streamCode = '0BEBC7FD'
       play.openPlayerModel(channel)
     }
+  },
+  mounted () {
+    let deviceId =  this.$route.query.deviceId
+    this.searchParams.deviceId = deviceId
+    this.loadData()
   }
 }
 </script>

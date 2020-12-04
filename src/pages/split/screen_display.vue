@@ -7,9 +7,11 @@
             :active-tab-key="key"
             @tabChange="key => onTabChange(key, 'key')"
           >
-              <a-directory-tree default-expand-all @select="onSelect" :selectedKeys="treeNode">
-                <a-tree-node :key="drive.id" :title="drive.name" v-for="drive in channelTreeData">
-                  <a-tree-node :key="channel.id" v-for="channel in drive.channels" :title="channel.name" is-leaf />
+              <a-directory-tree default-expand-all show-icon @select="onSelect" :selectedKeys="treeNode">
+                <a-tree-node :key="1" title="国标设备" :icon="getIcon(1)">
+                 <a-tree-node :key="drive.deviceId" :title="drive.deviceName" v-for="drive in channelTreeData" :icon="getIcon(2)">
+                    <a-tree-node :key="channel.channelId" v-for="channel in drive.nodes" :title="channel.channelName" is-leaf :icon="getIcon(3)" />
+                  </a-tree-node> 
                 </a-tree-node>
               </a-directory-tree>
           </a-card>
@@ -51,6 +53,7 @@
 <script>
 import LivePlayer from '@liveqing/liveplayer'
 import {mapState} from 'vuex'
+import {deviceChannelTree} from '@/services/device'
 import {getScanData, cleanScan} from '@/utils/scan.data'
 export default {
   components: {
@@ -79,26 +82,7 @@ export default {
       key: 'tab1',
       noTitleKey: 'app',
       videoPanel: {},
-      channelTreeData: [
-        {
-          name: '市民服务中心',
-          id: '1',
-          channels: [
-            {
-              name: '0BEBC750',
-              id: '0BEBC750'
-            },
-            {
-              name: '0BEBC39C',
-              id: '0BEBC39C'
-            },
-            {
-              name: '0BEBC7FD',
-              id: '0BEBC7FD'
-            }
-          ]
-        }
-      ]
+      channelTreeData: []
     };
   },
   methods: {
@@ -168,6 +152,23 @@ export default {
       this.videoPanel = getScanData(this.clickFlag)
       console.log(this.videoPanel)
       this.flagNextWindow()
+    },
+    loadTreeChannel () {
+      deviceChannelTree().then(res => {
+        console.log(res)
+        this.channelTreeData = res.data.data
+      })
+    },
+    getIcon(index) {
+      if(index == 1) {
+        return <a-icon type="pic-center" />
+      }
+      if (index == 2) {
+        return  <a-icon type="video-camera" />
+      }
+      if (index == 3) {
+        return <a-icon type="environment" />
+      }
     }
   },
   computed: {
@@ -175,6 +176,7 @@ export default {
   },
   mounted () {
      this.changeTab()
+     this.loadTreeChannel()
   }
 }
 </script>

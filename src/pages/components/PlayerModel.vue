@@ -21,49 +21,11 @@
         </a-col>
       </a-row>
       <div style="width: 100%; height: 460px;padding:0;margin:0;" 
-                @mouseenter="showMenu=true"
-                @mouseleave="showMenu=false">
-         <live-player :videoUrl="null" style="height: 300px;"
+                @mouseenter="show"
+                @mouseleave="hide">
+         <live-player :videoUrl="video.url" style="height: 300px;"
                 muted live stretch  object-fit="fillCrop" mode="live"></live-player>
-            <div class="optionMenu" v-if="showMenu">
-              <div class="top-div">
-                  <i class="iconfont icon-jia icon icon-tt" 
-                    :class="{itemHouver: itemHouverIndex == 1}" @mouseenter="mouseInner(1)" 
-                    @mouseleave="mouseOut"></i> 
-                  <i class="iconfont icon-jian icon icon-tt" 
-                    :class="{itemHouver: itemHouverIndex == 2}" @mouseenter="mouseInner(2)" 
-                    @mouseleave="mouseOut"></i>  
-              </div> 
-          
-              <a-row class="top-div-middle">
-                 <a-col :span="24" class="grid">
-                    <a-button type="link" size="small" @mouseenter="mouseInner(3)" 
-                      @mouseleave="mouseOut"> <a-icon class="icon"  :class="{itemHouver: itemHouverIndex == 3}" type="up" />
-                    </a-button>
-                 </a-col>
-                  <a-col :span="8" class="grid">
-                     <a-button type="link" size="small" @mouseenter="mouseInner(5)"  @mouseleave="mouseOut"> 
-                        <a-icon class="icon"  :class="{itemHouver: itemHouverIndex == 5}" type="left" />
-                    </a-button>
-                  </a-col>
-                  <a-col :span="8" class="grid">
-                     <a-button type="link" size="small" @mouseenter="mouseInner(7)"  @mouseleave="mouseOut"> 
-                        <i v-if="itemHouverIndex != 7" class="iconfont icon-iconhuatongguanbixuanzhong icon-c"></i>  
-                        <i v-if="itemHouverIndex == 7" class="iconfont icon-huatong icon-c itemHouver"></i>  
-                    </a-button>
-                  </a-col>
-                  <a-col :span="8" class="grid">
-                     <a-button type="link" size="small" @mouseenter="mouseInner(6)"  @mouseleave="mouseOut"> 
-                        <a-icon class="icon"  :class="{itemHouver: itemHouverIndex == 6}" type="right" />
-                    </a-button>
-                  </a-col>
-                  <a-col :span="24" class="grid">
-                    <a-button type="link" size="small" @mouseenter="mouseInner(4)" 
-                      @mouseleave="mouseOut"> <a-icon class="icon"  :class="{itemHouver: itemHouverIndex == 4}" type="down" />
-                    </a-button>
-                 </a-col>
-              </a-row>
-            </div>
+              <menu-model ref="menuModeRef" :serial="serial" :code="code"></menu-model>
       </div>
     </a-modal>
   </div>
@@ -71,21 +33,23 @@
 
 <script>
 import LivePlayer from '@liveqing/liveplayer'
+import MenuModel from '../components/MenuModel'
 export default {
   name: 'PlayerModel',
   components: {
-    'live-player': LivePlayer
+    'live-player': LivePlayer,
+    'menu-model': MenuModel
   },
   data () {
     return {
-      itemHouverIndex: null,
       modalVisible: false,
-      showMenu: false,
       video: {
         url: null,
         type: null
       },
-      channel: {}
+      channel: {},
+      serial: 'sss',
+      code: '333'
     }
   },
   methods: {
@@ -106,11 +70,11 @@ export default {
       this.getFlvUrl()
       this.setModalVisible(true)
     },
-    mouseInner(index) {
-      this.itemHouverIndex = index
+    show () {
+      this.$refs.menuModeRef.show()
     },
-    mouseOut () {
-       this.itemHouverIndex = null
+    hide () {
+      this.$refs.menuModeRef.hide()
     }
   }
 }

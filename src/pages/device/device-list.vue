@@ -24,9 +24,18 @@
           <a-input-search style="width: 300px;"  size="default" placeholder="关键字" enter-button @search="onSearch" />
         </a-col>
       </a-row>
-      <a-table :columns="columns" :data-source="data" :scroll="{ x: 1650 }" size="middle"  bordered>
+      <a-table :columns="columns" :data-source="dataSource.data" :scroll="{ x: 1650 }" 
+                rowKey="code"
+                size="middle"  bordered 
+                :pagination="{
+                  pageSizeOptions: ['10', '20', '30', '40', '50'],
+                  showSizeChanger: true,
+                  showTotal: function () {
+                    return '共 ' + dataSource.total + '条'
+                  }
+                }">
         <template slot="scan" slot-scope="text">
-            <a-button v-if="text.status == 1" type="link" size="small" @click="$router.push({path: 'device/channel', params: {channelId: text.id}})"> <a-icon type="eye" /> </a-button>
+            <a-button v-if="text.status == 1" type="link" size="small" @click="$router.push({path: 'device/channel', query: {deviceId: text.code}})"> <a-icon type="eye" /> </a-button>
         </template>
         <template slot="refresh" slot-scope="text">
           <a-button v-if="text.status == 1" type="link" size="small"> <a-icon  type="sync" /> </a-button>
@@ -75,7 +84,7 @@ const columns = [
     title: 'IP',
     width: 160,
     align: 'center',
-    dataIndex: 'ip',
+    dataIndex: 'host',
   },
   {
     title: '端口',
@@ -109,147 +118,43 @@ const columns = [
     scopedSlots: { customRender: 'refresh' },
   }
 ];
-
-const data = [
-  {
-    key: 1,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 2,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 0,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 3,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 4,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 0,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 5,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 6,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 7,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 0,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 8,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 9,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 0,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  },
-  {
-    key: 10,
-    code: '34020000001320000003',
-    name: '公园跑道',
-    transport: 'TCP',
-    status: 1,
-    ip: '221.213.222.21',
-    port: 5060,
-    channelNum: 3,
-    createTime: '2020-12-21 00:00:00',
-    updateTime: '2020-12-21 00:00:00'
-  }
-];
 import {mapState} from 'vuex'
+import {deviceList} from '@/services/device'
 export default {
   name: 'device',
   data () {
     return {
       searchStatus: 'all',
-      data,
       columns,
+      searchParams: {
+        pageNo: 1,
+        pageSize: 10
+      },
+      dataSource: {}
     }
   },
   methods: {
     onSearch () {
-
+      this.loadData()
+    },
+    loadData () {
+      deviceList(this.searchParams).then(res => {
+        let data = res.data
+        if (data.code == this.SUCCESS) {
+          this.dataSource = {total: data.data.total, data: data.data.list}
+        } else {
+          this.dataSource = {total: 0, data: []}
+        }
+        console.log(this.dataSource)
+      })
     }
   },
   computed: {
     ...mapState('setting', ['pageMinHeight'])
   },
+  mounted () {
+    this.loadData()
+  }
 }
 </script>
 

@@ -50,15 +50,16 @@ const assetsCDN = {
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   devServer: {
-    // proxy: {
-    //   '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
-    //     target: process.env.VUE_APP_API_BASE_URL,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/api': ''
-    //     }
-    //   }
-    // }
+    proxy: {
+      '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
+        //target: 'http://123.33.23.32:8081/api',
+        target: 'http://localhost:8089',
+        changeOrigin: false,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   },
   pluginOptions: {
     'style-resources-loader': {

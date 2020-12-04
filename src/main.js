@@ -15,6 +15,7 @@ const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
 
 Vue.prototype.VIDEO_URL = 'http://123.58.243.19/rtp/'
+Vue.prototype.SUCCESS = 0
 
 Vue.use(Antd)
 Vue.config.productionTip = false

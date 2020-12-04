@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "508514",
+      "name": "摄像头",
+      "font_class": "icon2",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
       "icon_id": "1458797",
       "name": "加",
       "font_class": "jia",
@@ -67,6 +74,13 @@
       "font_class": "sifenping1",
       "unicode": "e658",
       "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "13058472",
+      "name": "球形摄像头-01",
+      "font_class": "qiuxingshexiangtou-",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
     },
     {
       "icon_id": "14451669",
