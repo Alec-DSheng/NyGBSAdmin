@@ -5,7 +5,7 @@
       centered
        :width = "860"
       :visible="modalVisible"
-      @cancel="() => setModalVisible(false)"
+      @cancel="close"
       :footer="null"
     >
       <div slot="title" style="width: 100%; text-align:center;">{{channel.name}}</div>
@@ -34,6 +34,7 @@
 <script>
 import LivePlayer from '@liveqing/liveplayer'
 import MenuModel from '../components/MenuModel'
+import {player} from '@/services/video'
 export default {
   name: 'PlayerModel',
   components: {
@@ -58,23 +59,35 @@ export default {
     },
     getHlsUrl () {
       this.video.type = 'hls'
-      this.video.url = this.VIDEO_URL + this.channel.streamCode + '/hls.m3u8'
-      console.log(this.video)
+      this.video.url = this.video.hlsUrl
     },
     getFlvUrl () {
       this.video.type = 'flv'
-      this.video.url = this.VIDEO_URL + this.channel.streamCode + '.flv'
+      this.video.url = this.video.flvUrl
     },
     openPlayerModel (channel) {
       this.channel = channel
-      this.getFlvUrl()
+      console.log(this.channel)
+      //this.getFlvUrl()
       this.setModalVisible(true)
+      player({deviceId: channel.deviceId, channelId: channel.code}).then(res => {
+        let data = res.data.data
+        console.log(data)
+        this.channel.streamCode = data.streamCode
+        this.video.flvUrl = data.flvUrl
+        this.video.hlsUrl = data.hlsUrl
+        this.getFlvUrl()
+      })
     },
     show () {
       this.$refs.menuModeRef.show()
     },
     hide () {
       this.$refs.menuModeRef.hide()
+    },
+    close () {
+      this.setModalVisible(false)
+      this.video.url = null
     }
   }
 }
