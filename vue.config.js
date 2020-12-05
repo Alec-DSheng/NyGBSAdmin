@@ -53,7 +53,7 @@ module.exports = {
     proxy: {
       '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
         //target: 'http://123.33.23.32:8081/api',
-        target: 'http://localhost:8089',
+        target: 'http://10.39.68.136:18080/api',
         changeOrigin: false,
         pathRewrite: {
           '^/api': ''

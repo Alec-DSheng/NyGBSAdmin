@@ -5,7 +5,7 @@
       centered
        :width = "860"
       :visible="modalVisible"
-      @cancel="() => setModalVisible(false)"
+      @cancel="closeModel"
       :footer="null"
     >
       <div slot="title" style="width: 100%; text-align:center;">{{channel.name}}</div>
@@ -58,12 +58,15 @@ export default {
     },
     getHlsUrl () {
       this.video.type = 'hls'
-      this.video.url = this.VIDEO_URL + this.channel.streamCode + '/hls.m3u8'
+      this.video.url = this.VIDEO_URL + this.channel.ssrc + '/hls.m3u8'
+      //this.video.url =  this.channel.HLS
       console.log(this.video)
     },
     getFlvUrl () {
       this.video.type = 'flv'
-      this.video.url = this.VIDEO_URL + this.channel.streamCode + '.flv'
+      this.video.url = this.VIDEO_URL + this.channel.ssrc + '.flv'
+      //this.video.url = 'http://10.39.68.64:8080/hls/aacc.flv'
+      console.log(this.video)
     },
     openPlayerModel (channel) {
       this.channel = channel
@@ -75,6 +78,10 @@ export default {
     },
     hide () {
       this.$refs.menuModeRef.hide()
+    },
+    closeModel () {
+        this.video.url =  null
+        this.setModalVisible(false)
     }
   }
 }

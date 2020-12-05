@@ -45,7 +45,7 @@
         </a-col>
       </a-row>
       <a-table :columns="columns" :data-source="dataSource.data" :scroll="{ x: 1400 }" 
-          rowKey="code"
+          rowKey="ID"
           size="middle"  bordered 
           :pagination="{
             pageSizeOptions: ['10', '20', '30', '40', '50'],
@@ -59,8 +59,11 @@
               <a-icon style="fontSize:18px" type="video-camera" /> 
             </a-button>
         </template>
+         <template slot="noSolt" slot-scope="text">
+           {{text.ID.substring(16)}}
+        </template>
         <template slot="play" slot-scope="text">
-          <a-button  type="link" @click="player(text)">
+          <a-button  type="link" @click="playerVideo(text)">
              <a-icon style="fontSize:18px" type="play-circle" /> 
           </a-button>
         </template>
@@ -74,7 +77,7 @@
             <label>{{status == 1 ? '已开启' : '未开启'}}</label>
         </template>
         <template slot="imageView" slot-scope="text">
-            <a-popover v-if="text.image != null"  placement="left">
+            <a-popover v-if="text.SnapURL != null"  placement="left">
               <template slot="content">
                  <h5 v-text="'通道' + text.code + ':' + text.name"/>
                  <a-card hoverable :bodyStyle="{padding:0,margin:0}"  style="width:300px; height: 200px;">
@@ -86,9 +89,9 @@
                  </a-card>
               </template>
               <!-- <img :src="text.image == null ? '@/assets/img/logo.png' : text.image" style="width: 50px; max-height: 30px;" /> -->
-              <img style="width: 50px; max-height: 30px;" :src="text.image"/>
+              <img style="width: 50px; max-height: 30px;" :src="text.SnapURL"/>
             </a-popover>
-            <img v-if="text.image == null" style="width: 50px; max-height: 30px;" src="@/assets/img/no_img.png"/>
+            <img v-if="text.SnapURL == null" style="width: 50px; max-height: 30px;" src="@/assets/img/no_img.png"/>
         </template>
       </a-table>
       <!--引入组件 -->
@@ -103,25 +106,25 @@ const columns = [
     title: '通道号',
     width: 100,
     align: 'center',
-    dataIndex: 'no'
+    scopedSlots: { customRender: 'noSolt' },
   },
   {
     title: '通道国际编号',
     width: 220,
     align: 'center',
-    dataIndex: 'code'
+    dataIndex: 'ID'
   },
   {
     title: '通道名称',
     width: 200,
     align: 'center',
-    dataIndex: 'name',
+    dataIndex: 'Name',
   },
   {
     title: '在线状态',
     width: 100,
     align: 'center',
-    dataIndex: 'status',
+    dataIndex: 'DeviceOnline',
     scopedSlots: { customRender: 'onlineStatus' },
   },
   {
@@ -134,7 +137,7 @@ const columns = [
     title: '云端录像',
     align: 'center',
     width: 100,
-    dataIndex: 'cloudVideotape',
+    dataIndex: 'Status',
     scopedSlots: { customRender: 'cloudVideotape' },
   },
 
@@ -142,18 +145,18 @@ const columns = [
     title: '在线人数',
     width: 100,
     align: 'center',
-    dataIndex: 'viewers',
+    dataIndex: 'SubCount',
   },
   {
     title: '子节点数',
     align: 'center',
     width: 100,
-    dataIndex: 'secret',
+    dataIndex: 'Channel',
   },
   {
     title: '厂家',
     align: 'center',
-    dataIndex: 'manufacturer',
+    dataIndex: 'Manufacturer ',
   },
   {
     title: '播放',
@@ -163,7 +166,7 @@ const columns = [
     scopedSlots: { customRender: 'play' },
   },
   {
-    title: '播放',
+    title: '停止',
     fixed: 'right',
     align: 'center',
     width: 60,
@@ -178,7 +181,7 @@ const columns = [
   }
 ]
 import {mapState} from 'vuex'
-import {deviceChannelList} from '@/services/device'
+import {deviceChannelList,player} from '@/services/device'
 import PlayerModel from '../components/PlayerModel'
 export default {
   name: 'device_channel',
@@ -209,22 +212,24 @@ export default {
     loadData () {
       deviceChannelList(this.searchParams).then(res => {
         let data = res.data
-        if (data.code == this.SUCCESS) {
-          this.dataSource = {total: data.data.total, data: data.data.list}
-        } else {
-          this.dataSource = {total: 0, data: []}
-        }
+       this.dataSource = {total: data.ChannelCount, data: data.ChannelList}
         console.log(this.dataSource)
       })
     },
-    player (channel) {
-      let play = this.$refs.playerModelRef
-      play.openPlayerModel(channel)
+    playerVideo (channel) {
+      player(channel.DeviceID, channel.ID).then(res => {
+        console.log(res)
+        if (res && res.data) {
+           let play = this.$refs.playerModelRef
+           play.openPlayerModel(res.data)
+        }
+      })
     }
   },
   mounted () {
     let deviceId =  this.$route.query.deviceId
-    this.searchParams.deviceId = deviceId
+    this.searchParams.serial = deviceId
+    console.log(this.searchParams)
     this.loadData()
   }
 }
