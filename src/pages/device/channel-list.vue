@@ -64,8 +64,14 @@
              <a-icon style="fontSize:18px" type="play-circle" /> 
           </a-button>
         </template>
-        <template slot="stop">
-          <a-button  type="link" @click="stopPlayer"> <a-icon style="fontSize:18px" type="pause-circle" /> </a-button>
+        <template slot="stop" slot-scope="text">
+          <!--  -->
+          <a-popconfirm placement="leftTop" ok-text="确定" cancel-text="取消" @confirm="stop(text)">
+            <template slot="title">
+                确定要停止该渠道播放视频吗?
+            </template>
+            <a-button  type="link"> <a-icon style="fontSize:18px" type="pause-circle" /> </a-button>
+          </a-popconfirm>
         </template>
         <template slot="onlineStatus" slot-scope="status">
             <label :style="{color: status == 1 ? '#19be6b' : '#ed4014'}">{{status == 1 ? '在线' : '离线'}}</label>
@@ -85,7 +91,6 @@
                     />
                  </a-card>
               </template>
-              <!-- <img :src="text.image == null ? '@/assets/img/logo.png' : text.image" style="width: 50px; max-height: 30px;" /> -->
               <img style="width: 50px; max-height: 30px;" :src="text.image"/>
             </a-popover>
             <img v-if="text.image == null" style="width: 50px; max-height: 30px;" src="@/assets/img/no_img.png"/>
@@ -178,6 +183,7 @@ const columns = [
   }
 ]
 import {mapState} from 'vuex'
+import {stopPlayer} from '@/services/video'
 import {deviceChannelList} from '@/services/device'
 import PlayerModel from '../components/PlayerModel'
 export default {
@@ -221,8 +227,11 @@ export default {
       let play = this.$refs.playerModelRef
       play.openPlayerModel(channel)
     },
-    stopPlayer (channel) {
+    stop (channel) {
       console.log(channel)
+      stopPlayer({deviceId: channel.deviceId, channelId: channel.code}).then(res => {
+        console.log(res)
+      })
     }
   },
   mounted () {
