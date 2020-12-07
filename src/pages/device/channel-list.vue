@@ -65,7 +65,7 @@
           </a-button>
         </template>
         <template slot="stop">
-          <a-button  type="link"> <a-icon style="fontSize:18px" type="pause-circle" /> </a-button>
+          <a-button  type="link" @click="stopPlayer"> <a-icon style="fontSize:18px" type="pause-circle" /> </a-button>
         </template>
         <template slot="onlineStatus" slot-scope="status">
             <label :style="{color: status == 1 ? '#19be6b' : '#ed4014'}">{{status == 1 ? '在线' : '离线'}}</label>
@@ -220,6 +220,9 @@ export default {
     player (channel) {
       let play = this.$refs.playerModelRef
       play.openPlayerModel(channel)
+    },
+    stopPlayer (channel) {
+      console.log(channel)
     }
   },
   mounted () {
