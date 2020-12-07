@@ -58,13 +58,13 @@ export default {
     },
     getHlsUrl () {
       this.video.type = 'hls'
-      this.video.url = this.VIDEO_URL + this.channel.ssrc + '/hls.m3u8'
+      this.video.url = this.channel.hls
       //this.video.url =  this.channel.HLS
       console.log(this.video)
     },
     getFlvUrl () {
       this.video.type = 'flv'
-      this.video.url = this.VIDEO_URL + this.channel.ssrc + '.flv'
+      this.video.url = this.channel.flv
       //this.video.url = 'http://10.39.68.64:8080/hls/aacc.flv'
       console.log(this.video)
     },

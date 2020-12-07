@@ -45,7 +45,7 @@
         </a-col>
       </a-row>
       <a-table :columns="columns" :data-source="dataSource.data" :scroll="{ x: 1400 }" 
-          rowKey="ID"
+          rowKey="channelId"
           size="middle"  bordered 
           :pagination="{
             pageSizeOptions: ['10', '20', '30', '40', '50'],
@@ -60,7 +60,7 @@
             </a-button>
         </template>
          <template slot="noSolt" slot-scope="text">
-           {{text.ID.substring(16)}}
+           {{text.channelId.substring(16)}}
         </template>
         <template slot="play" slot-scope="text">
           <a-button  type="link" @click="playerVideo(text)">
@@ -112,19 +112,19 @@ const columns = [
     title: '通道国际编号',
     width: 220,
     align: 'center',
-    dataIndex: 'ID'
+    dataIndex: 'channelId'
   },
   {
     title: '通道名称',
     width: 200,
     align: 'center',
-    dataIndex: 'Name',
+    dataIndex: 'name',
   },
   {
     title: '在线状态',
     width: 100,
     align: 'center',
-    dataIndex: 'DeviceOnline',
+    dataIndex: 'status',
     scopedSlots: { customRender: 'onlineStatus' },
   },
   {
@@ -196,8 +196,8 @@ export default {
       searchParams: {
         deviceId: null,
         channelId: null,
-        pageSize: 10,
-        pageNo: 1
+        count: 10,
+        page: 0
       },
       searchStatus: 'all',
       searchType: 'all',
@@ -212,12 +212,12 @@ export default {
     loadData () {
       deviceChannelList(this.searchParams).then(res => {
         let data = res.data
-       this.dataSource = {total: data.ChannelCount, data: data.ChannelList}
+       this.dataSource = {total: data.total, data: data.data}
         console.log(this.dataSource)
       })
     },
     playerVideo (channel) {
-      player(channel.DeviceID, channel.ID).then(res => {
+      player(this.searchParams.deviceId, channel.channelId).then(res => {
         console.log(res)
         if (res && res.data) {
            let play = this.$refs.playerModelRef
@@ -228,7 +228,7 @@ export default {
   },
   mounted () {
     let deviceId =  this.$route.query.deviceId
-    this.searchParams.serial = deviceId
+    this.searchParams.deviceId = deviceId
     console.log(this.searchParams)
     this.loadData()
   }

@@ -25,7 +25,7 @@
         </a-col>
       </a-row>
       <a-table :columns="columns" :data-source="dataSource.data" :scroll="{ x: 1250 }" 
-                rowKey="ID"
+                rowKey="deviceId"
                 size="middle"  bordered 
                 :pagination="{
                   pageSizeOptions: ['10', '20', '30', '40', '50'],
@@ -36,10 +36,10 @@
                 }"
                 >
         <template slot="scan" slot-scope="text">
-            <a-button v-if="text.Online" type="link" size="small" @click="$router.push({path: 'device/channel', query: {deviceId: text.ID}})"> <a-icon type="eye" /> </a-button>
+            <a-button v-if="text.online" type="link" size="small" @click="$router.push({path: 'device/channel', query: {deviceId: text.deviceId}})"> <a-icon type="eye" /> </a-button>
         </template>
         <template slot="refresh" slot-scope="text">
-          <a-button v-if="text.Online" type="link" size="small"> <a-icon  type="sync" /> </a-button>
+          <a-button v-if="text.online" type="link" size="small"> <a-icon  type="sync" /> </a-button>
         </template>
         <template slot="onlineStatus" slot-scope="status">
             <label :style="{color: status == 1 ? '#19be6b' : '#ed4014'}">{{status == 1 ? '在线' : '离线'}}</label>
@@ -55,42 +55,42 @@ const columns = [
     title: '设备国际编号',
     width: 260,
     align: 'center',
-    dataIndex: 'ID'
+    dataIndex: 'deviceId'
   },
   {
     title: '名称',
     width: 200,
     align: 'center',
-    dataIndex: 'Name',
+    dataIndex: 'name',
   },
   {
     title: '传输模式',
     width: 100,
     align: 'center',
-    dataIndex: 'MediaTransport',
+    dataIndex: 'transport',
   },
   {
     title: '通道数',
     align: 'center',
-    dataIndex: 'ChannelCount',
+    dataIndex: 'channelCount',
   },
   {
     title: '在线状态',
     width: 100,
     align: 'center',
-    dataIndex: 'Online',
+    dataIndex: 'online',
     scopedSlots: { customRender: 'onlineStatus' },
   },
   {
     title: 'IP',
     width: 160,
     align: 'center',
-    dataIndex: 'RemoteIP',
+    dataIndex: 'host.ip',
   },
   {
     title: '端口',
     align: 'center',
-    dataIndex: 'RemotePort',
+    dataIndex: 'host.port',
   },
   // {
   //   title: '创建时间',
@@ -128,8 +128,8 @@ export default {
       searchStatus: 'all',
       columns,
       searchParams: {
-        pageNo: 1,
-        pageSize: 10
+        page: 0,
+        count: 10
       },
       dataSource: {}
     }
@@ -141,7 +141,7 @@ export default {
     loadData () {
       deviceList(this.searchParams).then(res => {
         let data = res.data
-        this.dataSource = {total: data.DeviceCount, data: data.DeviceList}
+        this.dataSource = {total: data.total, data: data.data}
         console.log(this.dataSource)
       })
     }
