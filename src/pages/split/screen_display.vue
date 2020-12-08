@@ -1,15 +1,15 @@
 <template>
   <a-row type="flex" :style="`height: ${pageMinHeight + 68}px`">
-    <a-col flex="300px">
+    <a-col flex="300px" style="height: 100%;">
          <a-card
-            style="width:100%;height:100%;"
+            style="width:100%;height: 100%;overflow-Y: auto;overflow-X:hidden;"
             :tab-list="tabList"
             :active-tab-key="key"
             @tabChange="key => onTabChange(key, 'key')"
           >
-              <a-directory-tree default-expand-all show-icon @select="onSelect" :selectedKeys="treeNode">
+             <a-directory-tree default-expand-all show-icon @select="onSelect" :selectedKeys="treeNode">
                 <a-tree-node :key="1" title="国标设备" :icon="getIcon(1)">
-                 <a-tree-node :key="drive.deviceId" :title="drive.deviceName" v-for="drive in channelTreeData" :icon="getIcon(2)">
+                <a-tree-node :key="drive.deviceId" :title="drive.deviceName" v-for="drive in channelTreeData" :icon="getIcon(2)">
                     <a-tree-node :key="channel.channelId" v-for="channel in drive.nodes" :title="channel.channelName" is-leaf :icon="getIcon(3)" />
                   </a-tree-node> 
                 </a-tree-node>
