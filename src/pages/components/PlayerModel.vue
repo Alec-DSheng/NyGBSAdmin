@@ -23,22 +23,24 @@
       <div style="width: 100%; height: 460px;padding:0;margin:0;" 
                 @mouseenter="show"
                 @mouseleave="hide">
-         <live-player :videoUrl="video.url" style="height: 300px;"
+                 <div id="Player"  style="height: 300px;width: 500px;"></div> 
+         <!-- <live-player :videoUrl="video.url" style="height: 300px;"
                 muted live stretch  object-fit="fillCrop" mode="live"></live-player>
-              <menu-model ref="menuModeRef" :serial="serial" :code="code"></menu-model>
+              <menu-model ref="menuModeRef" :serial="serial" :code="code"></menu-model> -->
       </div>
     </a-modal>
   </div>
 </template>
 
 <script>
-import LivePlayer from '@liveqing/liveplayer'
-import MenuModel from '../components/MenuModel'
+// import LivePlayer from '@liveqing/liveplayer'
+import WasmPlayer from '@easydarwin/easywasmplayer'
+//import MenuModel from '../components/MenuModel'
 export default {
   name: 'PlayerModel',
   components: {
-    'live-player': LivePlayer,
-    'menu-model': MenuModel
+    //'live-player': LivePlayer,
+    //'menu-model': MenuModel
   },
   data () {
     return {
@@ -49,7 +51,8 @@ export default {
       },
       channel: {},
       serial: 'sss',
-      code: '333'
+      code: '333',
+      player: ''
     }
   },
   methods: {
@@ -58,8 +61,7 @@ export default {
     },
     getHlsUrl () {
       this.video.type = 'hls'
-      this.video.url = this.channel.hls
-      //this.video.url =  this.channel.HLS
+      this.video.url = this.VIDEO_URL + 'hls/0BEBD849.m3u8'// + this.channel.ssrc + '.m3u8'
       console.log(this.video)
     },
     getFlvUrl () {
@@ -68,21 +70,41 @@ export default {
       //this.video.url = 'http://10.39.68.64:8080/hls/aacc.flv'
       console.log(this.video)
     },
+    callbackfun(e) {
+      console.log('callbackfun', e);
+    },
     openPlayerModel (channel) {
+      // this.video.url = ""
+      // this.$forceUpdate()
       this.channel = channel
+      //this.getHlsUrl()
       this.getFlvUrl()
+      console.log(channel)
+      this.player = new WasmPlayer(null, 'Player', this.callbackfun,{
+        cbUserPtr:this, 
+        decodeType:"soft", 
+        openAudio: true, 
+        BigPlay:false, 
+        Height:true
+      })
+      this.player.play(this.video.url, 1)
       this.setModalVisible(true)
     },
     show () {
-      this.$refs.menuModeRef.show()
+      //this.$refs.menuModeRef.show()
     },
     hide () {
-      this.$refs.menuModeRef.hide()
+      //this.$refs.menuModeRef.hide()
     },
     closeModel () {
-        this.video.url =  null
+        this.player = null
         this.setModalVisible(false)
     }
+  },
+  mounted () {
+    console.log(1111111111)
+    
+    console.log(this.player)
   }
 }
 </script>

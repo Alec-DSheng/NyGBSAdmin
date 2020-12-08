@@ -14,8 +14,8 @@
     "docs:deploy": "vuepress build docs && gh-pages -d docs/.vuepress/dist -b master -r https://gitee.com/iczer/vue-antd-admin-docs.git"
   },
   "dependencies": {
-    "jquery": "^2.2.1",
     "@antv/data-set": "^0.11.4",
+    "@easydarwin/easywasmplayer": "^4.0.7",
     "@liveqing/liveplayer": "^2.1.9",
     "animate.css": "^4.1.0",
     "ant-design-vue": "1.7.2",
@@ -26,6 +26,7 @@
     "date-fns": "^2.14.0",
     "enquire.js": "^2.1.6",
     "highlight.js": "^10.2.1",
+    "jquery": "^2.2.1",
     "js-cookie": "^2.2.1",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",

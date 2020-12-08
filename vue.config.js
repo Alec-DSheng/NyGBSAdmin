@@ -88,6 +88,8 @@ module.exports = {
       { from: 'node_modules/@liveqing/liveplayer/dist/component/crossdomain.xml'},
       { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer.swf'},
       { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer-lib.min.js', to: './assert/'},
+      { from: 'node_modules/@easydarwin/easywasmplayer/EasyWasmPlayer.js', to: './assert/'},
+      { from: 'node_modules/@easydarwin/easywasmplayer/libDecoder.wasm'},
     ]))  
     //jquery
     config.plugins.push(new webpack.ProvidePlugin({
