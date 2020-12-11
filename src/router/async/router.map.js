@@ -12,6 +12,7 @@ const routerMap = {
     path: '/login',
     component: () => import('@/pages/login')
   },
+<<<<<<< HEAD
   root: {
     path: '/',
     name: '首页',
@@ -119,6 +120,12 @@ const routerMap = {
     name: '异常页',
     icon: 'warning',
     component: view.blank
+=======
+  demo: {
+    name: '演示页',
+    renderMenu: false,
+    component: () => import('@/pages/demo')
+>>>>>>> basic_admin
   },
   exp403: {
     authority: '*',
@@ -136,6 +143,7 @@ const routerMap = {
     path: '500',
     component: () => import('@/pages/exception/500')
   },
+<<<<<<< HEAD
   components: {
     name: '小组件',
     icon: 'appstore-o',
@@ -152,3 +160,28 @@ const routerMap = {
 }
 export default routerMap
 
+=======
+  root: {
+    path: '/',
+    name: '首页',
+    redirect: '/login',
+    component: view.tabs
+  },
+  parent1: {
+    name: '父级路由1',
+    icon: 'dashboard',
+    component: view.blank
+  },
+  parent2: {
+    name: '父级路由2',
+    icon: 'form',
+    component: view.page
+  },
+  exception: {
+    name: '异常页',
+    icon: 'warning',
+    component: view.blank
+  }
+}
+export default routerMap
+>>>>>>> basic_admin

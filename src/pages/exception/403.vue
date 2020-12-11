@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
   <exception-page home-route="/dashboard/workplace" :style="`min-height: ${minHeight}`" type="403" />
+=======
+  <exception-page home-route="/demo" :style="`min-height: ${minHeight}`" type="403" />
+>>>>>>> basic_admin
 </template>
 
 <script>

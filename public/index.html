@@ -3,13 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0" name="viewport" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= process.env.VUE_APP_NAME %></title>
     <!-- require cdn assets css -->
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
       <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" />
     <% } %>
+<<<<<<< HEAD
+=======
+    <!-- <script src="<%= BASE_URL %>assert/liveplayer-lib.min.js"></script> -->
+    <script src="<%= BASE_URL %>assert/easy-player-lib.min.js"></script>
+>>>>>>> basic_admin
   </head>
   <body class="beauty-scroll">
     <noscript>
@@ -20,6 +25,10 @@
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
       <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
     <% } %>
+<<<<<<< HEAD
     <!-- built files will be auto injected -->
+=======
+    <!-- built files will be auto injected easy-player-lib.min.js -->
+>>>>>>> basic_admin
   </body>
 </html>

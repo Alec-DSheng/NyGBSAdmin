@@ -31,6 +31,10 @@ export default {
     },
     lang(val) {
       this.setLanguage(val)
+      this.setHtmlTitle()
+    },
+    $route() {
+      this.setHtmlTitle()
     },
     $route() {
       this.setHtmlTitle()
@@ -81,6 +85,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #id{
-  }
+   html body #app {
+     width: 100%;
+     height: 100%;
+     padding: 0;
+     margin: 0;
+   }
+   .ant-table-tbody > tr >td {
+     padding: 8px, 6px;
+   }
 </style>

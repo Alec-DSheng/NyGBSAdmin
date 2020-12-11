@@ -31,7 +31,7 @@ export default {
     .progress {
       transition: all 0.4s cubic-bezier(0.08, 0.82, 0.17, 1) 0s;
       border-radius: 1px 0 0 1px;
-      background-color: #13C2C2;
+      background-color: #f5222d;
       width: 0;
       height: 100%;
     }

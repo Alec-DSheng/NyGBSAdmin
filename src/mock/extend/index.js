@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import {logos, sayings, positions, avatars, admins} from '../common'
+import {positions, avatars, admins} from '../common'
 
 const Random = Mock.Random
 
@@ -27,6 +27,7 @@ const timeList = [
   }
 ]
 
+<<<<<<< HEAD
 const welcomeMessages = [
   {
     CN: '休息一会儿吧',
@@ -52,12 +53,11 @@ const welcomeMessages = [
 
 const goods = ['运动鞋', '短裤', 'T恤', '七分裤', '风衣', '寸衫']
 
+=======
+>>>>>>> basic_admin
 Random.extend({
   admin () {
     return this.pick(admins)
-  },
-  welcome () {
-    return this.pick(welcomeMessages)
   },
   timeFix () {
     const time = new Date()
@@ -70,6 +70,7 @@ Random.extend({
   },
   position () {
     return this.pick(positions)
+<<<<<<< HEAD
   },
   goods () {
     return this.pick(goods)
@@ -79,5 +80,7 @@ Random.extend({
   },
   logo () {
     return this.pick(logos)
+=======
+>>>>>>> basic_admin
   }
 })

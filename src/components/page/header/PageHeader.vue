@@ -3,6 +3,7 @@
     <div class="page-header-wide">
       <div class="breadcrumb">
         <a-breadcrumb>
+           <a-breadcrumb-item>您当前位置:</a-breadcrumb-item>
           <a-breadcrumb-item :key="index" v-for="(item, index) in breadcrumb">
             <span>{{item}}</span>
           </a-breadcrumb-item>
