@@ -85,9 +85,12 @@ module.exports = {
 
     //播放器
     config.plugins.push( new CopyWebpackPlugin([
-      { from: 'node_modules/@liveqing/liveplayer/dist/component/crossdomain.xml'},
-      { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer.swf'},
-      { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer-lib.min.js', to: './assert/'},
+      // { from: 'node_modules/@liveqing/liveplayer/dist/component/crossdomain.xml'},
+      // { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer.swf'},
+      // { from: 'node_modules/@liveqing/liveplayer/dist/component/liveplayer-lib.min.js', to: './assert/'},
+      { from: 'node_modules/easy-player/dist/component/crossdomain.xml'},
+      { from: 'node_modules/easy-player/dist/component/easy-player.swf'},
+      { from: 'node_modules/easy-player/dist/component/easy-player-lib.min.js', to: './assert/'}
     ]))  
     //jquery
     config.plugins.push(new webpack.ProvidePlugin({

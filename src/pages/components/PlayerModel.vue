@@ -24,7 +24,7 @@
                 @mouseenter="show"
                 @mouseleave="hide">
          <live-player :videoUrl="video.url" style="height: 300px;"
-                muted live stretch  object-fit="fillCrop" mode="live"></live-player>
+                muted live stretch fluent object-fit="fillCrop" mode="live"></live-player>
               <menu-model ref="menuModeRef" :serial="serial" :code="code"></menu-model>
       </div>
     </a-modal>
@@ -32,13 +32,14 @@
 </template>
 
 <script>
-import LivePlayer from '@liveqing/liveplayer'
+//import LivePlayer from '@liveqing/liveplayer'
+import EasyPlayer from 'easy-player'
 import MenuModel from '../components/MenuModel'
 import {player} from '@/services/video'
 export default {
   name: 'PlayerModel',
   components: {
-    'live-player': LivePlayer,
+    'live-player': EasyPlayer,
     'menu-model': MenuModel
   },
   data () {

@@ -10,7 +10,8 @@
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
       <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" />
     <% } %>
-    <script src="<%= BASE_URL %>assert/liveplayer-lib.min.js"></script>
+    <!-- <script src="<%= BASE_URL %>assert/liveplayer-lib.min.js"></script> -->
+    <script src="<%= BASE_URL %>assert/easy-player-lib.min.js"></script>
   </head>
   <body class="beauty-scroll">
     <noscript>
@@ -21,6 +22,6 @@
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
       <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
     <% } %>
-    <!-- built files will be auto injected -->
+    <!-- built files will be auto injected easy-player-lib.min.js -->
   </body>
 </html>

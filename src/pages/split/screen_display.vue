@@ -10,7 +10,7 @@
              <a-directory-tree default-expand-all show-icon @select="onSelect" :selectedKeys="treeNode">
                 <a-tree-node :key="1" title="国标设备" :icon="getIcon(1)">
                 <a-tree-node :key="drive.deviceId" :title="drive.deviceName" v-for="drive in channelTreeData" :icon="getIcon(2)">
-                    <a-tree-node :key="channel.channelId" v-for="channel in drive.nodes" :title="channel.channelName" is-leaf :icon="getIcon(3)" />
+                    <a-tree-node :key="drive.deviceId + ',' + channel.channelId" v-for="channel in drive.nodes" :title="channel.channelName" is-leaf :icon="getIcon(3)" :disabled="channel.channelStatus == 0" />
                   </a-tree-node> 
                 </a-tree-node>
               </a-directory-tree>
@@ -35,15 +35,14 @@
                 </div>
           </div>
           <!-- 多屏显示区域 -->
-           <a-row style="height: 100%;" :gutter="8" justify="space-around" align="middle">
+           <a-row style="height: 100%;" :gutter="0" justify="space-around" align="middle">
             <a-col
               v-for="panel in videoPanel.video" :key="panel.id"
               @click="selectPlayContent(panel.id)"
               :span="videoPanel.span" 
-              :style="{border: '1px solid ' + (playerIndex == panel.id ? '#ed4014' : '#DEDEDE'), height:    videoPanel.height + '%', paddingTop: '2px'}">
-                <live-player :videoUrl="panel.url"
-                 aspect='fullscreen' 
-                muted live stretch resolution='hd,sd' object-fit="fillCrop" mode="live"></live-player>
+              :style="{border: '1px solid ' + (playerIndex == panel.id ? '#ed4014' : '#DEDEDE'), height:    videoPanel.height + '%', paddingTop: '5px',backgroundColor: '#000'}">
+                <live-player :videoUrl="panel.url" 
+                 muted live aspect='fullscreen' stretch fluent  mode="live"></live-player>
             </a-col>
           </a-row>
        </a-card>
@@ -51,13 +50,15 @@
   </a-row>
 </template>
 <script>
-import LivePlayer from '@liveqing/liveplayer'
+//import LivePlayer from '@liveqing/liveplayer'
+import EasyPlayer from 'easy-player'
 import {mapState} from 'vuex'
 import {deviceChannelTree} from '@/services/device'
 import {getScanData, cleanScan} from '@/utils/scan.data'
+import {player} from '@/services/video'
 export default {
   components: {
-    'live-player': LivePlayer
+    'live-player': EasyPlayer
   },
   data() {
     return {
@@ -108,23 +109,28 @@ export default {
       }
     },
     play (id) {
-      console.log('播放' + id + '视频')
-      //得到URL
-      let url =  this.VIDEO_URL + id + '.flv'
-      console.log(url)
-      //得到当前播放窗口
-      console.log(this.videoPanel)
-      let pindex = 0
-      this.videoPanel.video.forEach((element, index) => {
-        console.log(index)
-        if (element.id == this.playerIndex) {
-          console.log('当前窗口播放视频 ' + element.id )
-          element.url = url
-          this.$forceUpdate()
-          pindex = index
-        }
-      });
-       this.flagNextWindow(pindex)
+      let ids = id[0].split(',')
+      player({deviceId: ids[0], channelId: ids[1]}).then(res => {
+        let data = res.data.data
+        console.log(data)
+        let url =  data.flvUrl
+        let pindex = 0
+        this.videoPanel.video.forEach((element, index) => {
+          console.log(index)
+          if (element.id == this.playerIndex) {
+            console.log('当前窗口播放视频 ' + element.id )
+            element.url = url
+            this.$forceUpdate()
+            pindex = index
+          }
+        });
+        this.flagNextWindow(pindex)
+      })
+      // //得到URL
+      // let url =  this.VIDEO_URL + id + '.flv'
+      // console.log(url)
+      // //得到当前播放窗口
+      // console.log(this.videoPanel)
     },
     onSelect (id, v) {
       if(v.node.isLeaf) {
